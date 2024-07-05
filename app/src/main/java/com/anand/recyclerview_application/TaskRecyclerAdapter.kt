@@ -46,6 +46,7 @@ class TaskRecyclerAdapter(var context: Context,var list: ArrayList<TaskDataClass
         holder.btnDelete.setOnClickListener {
             taskRecyclerInterface.delete(position)
         }
+
     }
 
 

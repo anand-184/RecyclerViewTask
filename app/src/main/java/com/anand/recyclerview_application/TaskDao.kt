@@ -15,10 +15,10 @@ interface TaskDao {
     @Update
     fun updateTask(taskDataClass: TaskDataClass)
     @Delete
-    fun deleteTAsk(taskDataClass: TaskDataClass)
+    fun deleteTask(taskDataClass: TaskDataClass)
 
     @Query("SELECT * FROM TaskDataClass")
-    fun getTask(): List<TaskDataClass>
+    fun getList(): List<TaskDataClass>
 
     @Query("SELECT * FROM TaskDataClass WHERE priority=:priority")
     fun taskAccPriority(priority: Int) : List<TaskDataClass>

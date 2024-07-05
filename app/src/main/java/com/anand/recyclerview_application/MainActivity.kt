@@ -34,10 +34,10 @@ class MainActivity : AppCompatActivity(), RecyclerInterface {
         manager = LinearLayoutManager(this)
         binding?.recyclerView?.layoutManager = manager
         binding?.recyclerView?.adapter = adapter
-        getData()
+        getList()
         binding?.rbAll?.setOnClickListener {
             list.clear()
-           getData()
+           getList()
             adapter.notifyDataSetChanged()
         }
         binding?.rbLowP?.setOnClickListener {
@@ -60,10 +60,7 @@ class MainActivity : AppCompatActivity(), RecyclerInterface {
             val dialog = Dialog(this)
             var dialogBinding = CustomDialogTaskBinding.inflate(layoutInflater)
             dialog.setContentView(dialogBinding.root)
-            window.setLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
+            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
             dialog.show()
             dialogBinding.btnAdd.setOnClickListener {
                 if (dialogBinding.etTitle.text?.toString().isNullOrEmpty()) {
@@ -96,24 +93,34 @@ class MainActivity : AppCompatActivity(), RecyclerInterface {
                             priority = pirority
                         )
                     )
-                    getData()
+                    getList()
+                    adapter.notifyDataSetChanged()
                     dialog.dismiss()
                 }
             }
         }
     }
 
-    fun getData(){
+    fun getList(){
         list.clear()
-        list.addAll(taskDatabase.taskDao().getTask())
+        list.addAll(taskDatabase.taskDao().getList())
         adapter.notifyDataSetChanged()
     }
+
 
     override fun update(position: Int) {
         Dialog(this).apply {
             var dialogBinding = CustomDialogTaskBinding.inflate(layoutInflater)
             setContentView(dialogBinding.root)
+            window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
             show()
+            dialogBinding.etTitle.setText(list[position].title)
+            dialogBinding.etDes.setText(list[position].description)
+            when(list[position].priority){
+                0->dialogBinding.rbLow.isChecked = true
+                2->dialogBinding.rbMedium.isChecked = true
+                1->dialogBinding.rbHigh.isChecked = true
+            }
             dialogBinding.btnAdd.setOnClickListener {
                 if (dialogBinding.etTitle.text.toString().isNullOrEmpty()) {
                     dialogBinding.etTitle.error = "enter Title"
@@ -140,10 +147,13 @@ class MainActivity : AppCompatActivity(), RecyclerInterface {
                     */
                     taskDatabase.taskDao().updateTask(
                         TaskDataClass(
-                        id=0, title = dialogBinding?.etTitle?.text.toString()
+                        id=list[position].id, title = dialogBinding?.etTitle?.text.toString(),
+                            description = dialogBinding?.etDes?.text.toString(),
+                            priority = pirority
                     )
                     )
                     adapter.notifyDataSetChanged()
+                    getList()
                     dismiss()
                 }
 
@@ -153,18 +163,22 @@ class MainActivity : AppCompatActivity(), RecyclerInterface {
     }
 
     override fun delete(position: Int) {
-        var deleteDialog = AlertDialog.Builder(this)
+        var deleteDialog = AlertDialog.Builder(this@MainActivity)
         deleteDialog.setTitle("Remove Task")
         deleteDialog.setMessage("Do you want to delete the task")
         deleteDialog.setPositiveButton("YES") { _, _ ->
+            taskDatabase.taskDao().deleteTask(list[position])
             Toast.makeText(this@MainActivity, "Task Deleted", Toast.LENGTH_SHORT).show()
             adapter.notifyDataSetChanged()
         }
         deleteDialog.setNegativeButton("NO") { _, _ ->
         }
+        adapter.notifyDataSetChanged()
         deleteDialog.show()
+        getList()
     }
 
 
+    }
 
-}
+
