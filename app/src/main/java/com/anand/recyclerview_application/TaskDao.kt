@@ -22,5 +22,16 @@ interface TaskDao {
 
     @Query("SELECT * FROM TaskDataClass WHERE priority=:priority")
     fun taskAccPriority(priority: Int) : List<TaskDataClass>
+    @Insert
+    fun insertTodoItem(toDoEntity: ToDoEntity)
+    @Query("SELECT * FROM TodoEntity where taskId=:taskId")
+    fun getTodoList(taskId: Int): List<ToDoEntity>
+
+    @Update
+    fun updateToDoItem(todoEntity: ToDoEntity)
+
+    @Delete
+    fun deleteToDoItem(todoEntity: ToDoEntity)
+
 
 }
