@@ -1,6 +1,7 @@
 package com.anand.recyclerview_application
 
 import android.content.Context
+import android.icu.util.Calendar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,13 +9,19 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import org.w3c.dom.Text
+import java.text.SimpleDateFormat
+import java.util.SimpleTimeZone
 
-class TaskRecyclerAdapter(var context: Context,var list: ArrayList<TaskDataClass>,var taskRecyclerInterface: RecyclerInterface) :
+class TaskRecyclerAdapter(var context: Context,var list: ArrayList<TaskShownList>,var taskRecyclerInterface: RecyclerInterface) :
     RecyclerView.Adapter<TaskRecyclerAdapter.ViewHolder>() {
     class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
         var tvtitle = view.findViewById<TextView>(R.id.tvTitle)
         var tvDesc = view.findViewById<TextView>(R.id.tvDescription)
+        var tvDate = view.findViewById<TextView>(R.id.tvDate)
+        var tvTime = view.findViewById<TextView>(R.id.tvTime)
         val itemLayout = view.findViewById<LinearLayout>(R.id.itemLayout)
+        var todoList = view.findViewById<TextView>(R.id.tvTodolist)
         var btnUpdate = view.findViewById<Button>(R.id.btnUpdate)
         var btnDelete = view.findViewById<Button>(R.id.btnDelete)
 
@@ -49,6 +56,13 @@ class TaskRecyclerAdapter(var context: Context,var list: ArrayList<TaskDataClass
         holder.itemView.setOnClickListener {
             taskRecyclerInterface.itemClick(position)
         }
+        holder.todoList.setText(list[position].todoList.toString())
+        var createdDate = Calendar.getInstance()
+        createdDate.time = list[position].taskDataClass.createdDate
+        holder.tvDate.setText(SimpleDateFormat("dd,MMM,YYYY").format(createdDate.time))
+        var createdTime = Calendar.getInstance()
+        createdTime.time = list[position].taskDataClass.createdTime
+        holder.tvTime.setText(SimpleDateFormat("hh:mm:ss").format(createdTime.time))
 
     }
 

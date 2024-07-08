@@ -11,7 +11,7 @@
        android:layout_height="wrap_content"
        android:text="Title"
        android:textSize="20sp"/>
-    <EditText
+    <TextView
         android:id="@+id/etnotesTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:text="Description"
         android:textSize="20sp"/>
-    <EditText
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Description"
@@ -34,6 +34,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/notesRecycler"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <Button

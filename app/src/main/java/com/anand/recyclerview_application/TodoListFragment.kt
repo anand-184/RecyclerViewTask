@@ -21,8 +21,8 @@ import com.google.gson.Gson
 
 class TodoListFragment : Fragment(), RecyclerInterface {
     var binding: FragmentTodoListBinding? = null
+    var list = arrayListOf<TaskShownList>()
     lateinit var manager: LinearLayoutManager
-    var list = arrayListOf<TaskDataClass>()
     lateinit var adapter: TaskRecyclerAdapter
     lateinit var taskDatabase: TaskDatabase
 
@@ -43,7 +43,7 @@ class TodoListFragment : Fragment(), RecyclerInterface {
         super.onViewCreated(view, savedInstanceState)
         taskDatabase = TaskDatabase.getInstance(requireContext())
         adapter = TaskRecyclerAdapter(requireContext(), list, this)
-        manager = LinearLayoutManager(requireContext())
+        manager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         binding?.recyclerView?.layoutManager = manager
         binding?.recyclerView?.adapter = adapter
         getList()

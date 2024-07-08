@@ -24,6 +24,18 @@
         android:textSize="20sp"
         android:hint="Description"
         android:id="@+id/tvDescription"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvTodolist"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvDate"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvTime"/>
     </LinearLayout>
     <Button
         android:id="@+id/btnUpdate"
