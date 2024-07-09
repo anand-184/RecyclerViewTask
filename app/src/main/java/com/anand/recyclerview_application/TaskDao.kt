@@ -25,7 +25,7 @@ interface TaskDao {
     @Insert
     fun insertTodoItem(toDoEntity: ToDoEntity)
     @Query("SELECT * FROM TodoEntity where taskId=:taskId")
-    fun getTodoList(taskId: Int): List<ToDoEntity>
+    fun getTodoList(taskId: Int): List<TaskShownList>
 
     @Update
     fun updateToDoItem(todoEntity: ToDoEntity)

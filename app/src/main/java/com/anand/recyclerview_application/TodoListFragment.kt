@@ -114,7 +114,7 @@ class TodoListFragment : Fragment(), RecyclerInterface {
     }
     fun getList(){
         list.clear()
-        list.addAll(taskDatabase.taskDao().getList())
+        list.addAll(taskDatabase.taskDao().getTaskTodoList())
         adapter.notifyDataSetChanged()
     }
 
@@ -125,9 +125,9 @@ class TodoListFragment : Fragment(), RecyclerInterface {
             setContentView(dialogBinding.root)
             window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT)
             show()
-            dialogBinding.etTitle.setText(list[position].title)
-            dialogBinding.etDes.setText(list[position].description)
-            when(list[position].priority){
+            dialogBinding.etTitle.setText(list[position].taskDataClass.title)
+            dialogBinding.etDes.setText(list[position].taskDataClass.description)
+            when(list[position].taskDataClass.priority){
                 0->dialogBinding.rbLow.isChecked = true
                 2->dialogBinding.rbMedium.isChecked = true
                 1->dialogBinding.rbHigh.isChecked = true
@@ -158,7 +158,7 @@ class TodoListFragment : Fragment(), RecyclerInterface {
                     */
                     taskDatabase.taskDao().updateTask(
                         TaskDataClass(
-                        id=list[position].id, title = dialogBinding?.etTitle?.text.toString(),
+                        id=list[position].taskDataClass.id, title = dialogBinding?.etTitle?.text.toString(),
                             description = dialogBinding?.etDes?.text.toString(),
                             priority = pirority
                     )
@@ -178,14 +178,13 @@ class TodoListFragment : Fragment(), RecyclerInterface {
         deleteDialog.setTitle("Remove Task")
         deleteDialog.setMessage("Do you want to delete the task")
         deleteDialog.setPositiveButton("YES") { _, _ ->
-            taskDatabase.taskDao().deleteTask(list[position])
+            taskDatabase.taskDao().deleteTask(list[position].taskDataClass)
             Toast.makeText(requireContext(), "Task Deleted", Toast.LENGTH_SHORT).show()
-            adapter.notifyDataSetChanged()
+            getList()
         }
         deleteDialog.setNegativeButton("NO") { _, _ ->
         }
         deleteDialog.show()
-        getList()
     }
 
     override fun itemClick(position: Int) {
